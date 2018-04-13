@@ -1,0 +1,5 @@
+boto3==1.7.4
+opencv-python==3.4.0.12
+Pillow==5.1.0
+python-vlc==3.0.102
+future==0.16.0
