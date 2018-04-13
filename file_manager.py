@@ -11,4 +11,4 @@ class FileManager:
     def get_filepath(self, name):
         if name not in NAME_SONG_DICT:
             return None
-        return NAME_SONG_DICT["name"]
+        return NAME_SONG_DICT[name]
