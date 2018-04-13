@@ -1,7 +1,11 @@
+import base64
+from io import BytesIO
+
 import boto3
 import cv2
 from PIL import Image
 from past.builtins import raw_input
+
 
 class PhotoSnapper:
     camera = cv2.VideoCapture(0)
@@ -13,10 +17,13 @@ class PhotoSnapper:
         :return:
         """
         raw_input('Press Enter to capture')
-        return_value, image = cls.camera.read()
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        img = Image.fromarray(image)
-        return img.tobytes()
+        return_value, img_arr = cls.camera.read()
+        img_arr = cv2.cvtColor(img_arr, cv2.COLOR_BGR2RGB)
+        img = Image.fromarray(img_arr)
+        buffered = BytesIO()
+        img.save(buffered, format="JPEG")
+        imgstr = base64.b64encode(buffered.getvalue())
+        return imgstr
 
     def dispatch_to_rekognition(self, imgstr: bytes):
         client = boto3.client('rekognition', 'us-west-2')
